@@ -1,5 +1,6 @@
 var express = require('express'); // Web Framework
 var app = express();
+var cors = require('cors');
 const MongoClient = require("mongodb").MongoClient;
 const uri = "mongodb+srv://Karl:discord@cluster0.c2iuu.mongodb.net/test";
 const dbName = "discordBot";
@@ -9,6 +10,7 @@ const client = new MongoClient(uri, {
 });
 
 async function run() {
+	app.use(cors());
 
    await client.connect();
    console.log("connected to mongodb");
@@ -23,6 +25,9 @@ var server= app.listen(8081,function(){
 
   console.log("applistening at http://%s:%s", host, port);
 });
+
+
+
 
 app.get('', async function (req, res){
   res.send("<h1>To use this REST you can use commands<br> /listdatabases <br> /retrieve <br> These are pretty self explanitory but Retrieve will return all of the discord bot entries</h1>");
@@ -66,6 +71,7 @@ app.get('/retrieveJabbafeet', async function (req, res){
 });
 
 app.get('/retrieve', async function (req, res){
+	
     const db = client.db(dbName);
     const col = db.collection("discordBot");
 
